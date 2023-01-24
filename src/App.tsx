@@ -11,9 +11,11 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
+
 import Tab1 from './pages/Tabs/Tab1/Tab1';
 import Tab2 from './pages/Tabs/Tab2/Tab2';
 import Tab3 from './pages/Tabs/Tab3/Tab3';
+
 /* Core CSS used for custom global classes */
 import './App.scss';
 
