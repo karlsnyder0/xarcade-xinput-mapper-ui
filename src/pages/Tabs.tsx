@@ -12,12 +12,13 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
 
-import Tab1 from './pages/Tabs/Tab1/Tab1';
-import Tab2 from './pages/Tabs/Tab2/Tab2';
-import Tab3 from './pages/Tabs/Tab3/Tab3';
+import Tab1 from './Tabs/Tab1/Tab1';
+import Tab2 from './Tabs/Tab2/Tab2';
+import Tab3 from './Tabs/Tab3/Tab3';
+import Tab4 from './Tabs/Tab4/Tab4';
 
 /* Core CSS used for custom global classes */
-import './App.scss';
+import './Tabs.scss';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -36,7 +37,7 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
-import './theme/variables.scss';
+import '../theme/variables.scss';
 
 const App: React.FC = () => (
   <IonApp>
@@ -46,6 +47,7 @@ const App: React.FC = () => (
           <Route path='/tab1' component={Tab1} exact={true} />
           <Route path='/tab2' component={Tab2} exact={true} />
           <Route path='/tab3' component={Tab3} />
+          <Route path='/tab4' component={Tab4} />
           <Route path='/' render={() => <Redirect to='/tab1' />} exact={true} />
         </IonRouterOutlet>
         <IonTabBar slot='bottom'>
@@ -60,6 +62,10 @@ const App: React.FC = () => (
           <IonTabButton tab='tab3' href='/tab3'>
             <IonIcon icon={square} />
             <IonLabel>Tab 3</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab='tab4' href='/tab4'>
+            <IonIcon icon={square} />
+            <IonLabel>Tab 4</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
