@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 
 // import App from './pages/Tabs';
-import App from './pages/Home';
+import App from './pages/App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));

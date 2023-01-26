@@ -4,7 +4,7 @@ import {
 } from '@ionic/react';
 
 /* Core CSS used for custom global classes */
-import './Home.scss';
+import './Plain.scss';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
