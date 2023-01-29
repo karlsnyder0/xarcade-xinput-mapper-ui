@@ -29,7 +29,7 @@ const AppTw: React.FC = () => (
   <IonApp>
     <div className="w-full h-screen mx-auto container flex flex-col items-center justify-center">
       <div className="items-center flex flex-col items-center bg-blue-400 px-16 py-12 rounded-lg shadow-xl">
-        <div className="text-2xl text-white font-extrabold ">React + Ionic + Tailwind + Storybook</div>
+        <div className="text-2xl text-white font-extrabold ">React + Fluent + Tailwind + Storybook</div>
       </div>
     </div>
   </IonApp>

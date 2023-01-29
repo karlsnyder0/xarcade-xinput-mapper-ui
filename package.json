@@ -1,5 +1,5 @@
 {
-  "name": "react-ionic-tailwind-bootstrap",
+  "name": "react-tailwind-fluentui-bootstrap",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -21,6 +21,7 @@
     "@capacitor/cli": "2.4.6",
     "@capacitor/core": "2.4.6",
     "@craco/craco": "^6.1.2",
+    "@fluentui/react-components": "^9.12.0",
     "@fullhuman/postcss-purgecss": "^5.0.0",
     "@storybook/addon-actions": "^6.1.20",
     "@storybook/addon-essentials": "^6.1.20",
@@ -43,6 +44,7 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.14.0",
     "autoprefixer": "^9.8.6",
+    "beautiful-react-hooks": "^3.12.2",
     "eslint": "^7.32.0",
     "eslint-plugin-storybook": "^0.6.8",
     "node-sass": "4.14.1",
@@ -54,7 +56,7 @@
   },
   "scripts": {
     "_test": "echo \"Error: no test specified\" && exit 1",
-    "start": "TAILWIND_MODE=watch craco start",
+    "start": "TAILWIND_MODE=watch BROWSER='google chrome' BROWSER_ARGS='--remote-debugging-port=9222' craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",

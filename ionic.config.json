@@ -1,7 +1,0 @@
-{
-  "name": "react-ionic-tailwind-bootstrap",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
-}
