@@ -5,7 +5,7 @@ interface DarkModeSwitchProps {
     isDarkMode: boolean;
 }
 
-const DarkModeSwitch = (props: DarkModeSwitchProps) => {
+const DarkModeSwitch: React.FC<DarkModeSwitchProps> = (props: DarkModeSwitchProps) => {
   return (
     <>
         <Switch label="Dark Mode" checked={props.isDarkMode ? true : false} onChange={props.toggle} />

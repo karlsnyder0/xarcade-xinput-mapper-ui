@@ -1,1 +1,1 @@
-# react-tailwind-fluentui-bootstrap
+# react-fluentui-tailwind-boilerplate
