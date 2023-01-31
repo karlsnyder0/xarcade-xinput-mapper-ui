@@ -15,7 +15,9 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "uuid": "^9.0.0",
+    "zustand": "^4.3.2"
   },
   "devDependencies": {
     "@capacitor/cli": "2.4.6",
@@ -41,11 +43,13 @@
     "@types/react-dom": "17.0.0",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
+    "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.14.0",
     "autoprefixer": "^9.8.6",
     "beautiful-react-hooks": "^3.12.2",
     "eslint": "^7.32.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.8",
     "node-sass": "4.14.1",
     "postcss": "^7.0.35",
