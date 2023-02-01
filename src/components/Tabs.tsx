@@ -5,6 +5,8 @@ import { Button, Overflow, OverflowItem, SelectTabData, SelectTabEvent, SelectTa
 
 import { useMappingStore } from '../stores/MappingStore';
 
+import MapXInput from './MapXInput';
+
 import './Tabs.scss';
 
 const Tabs: React.FC = () => {
@@ -37,7 +39,7 @@ const Tabs: React.FC = () => {
                                     </OverflowItem>
                                 );
                             })}
-                        <Button appearance="transparent" size="small" onClick={onAddTab}>+</Button>
+                            <Button key={v4()} appearance="transparent" size="small" onClick={onAddTab}>+</Button>
                         </TabList>
                     </Overflow>
                 </div>
@@ -49,7 +51,10 @@ const Tabs: React.FC = () => {
                             ${currentTab === id ? 'block' : 'hidden'}
                             bg-dpad bg-no-repeat
                             p-4 block grow flex-1
-                        `}></div>
+                        `}>
+                            <MapXInput label="Trigger" />
+                            <MapXInput className="pt-2" label="Bumper" />
+                        </div>
                     );
                 })}
             </div>
