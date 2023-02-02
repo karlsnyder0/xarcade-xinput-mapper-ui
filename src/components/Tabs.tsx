@@ -8,9 +8,10 @@ import { useMappingStore } from '../stores/MappingStore';
 import MapXInput from './MapXInput';
 
 import './Tabs.scss';
+import { XInput } from '../models/Mapping';
 
 const Tabs: React.FC = () => {
-    const { mappings, add } = useMappingStore();
+    const { mappings, create } = useMappingStore();
 
     const [currentTab, setCurrentTab] = React.useState<TabValue>('1');
 
@@ -19,7 +20,7 @@ const Tabs: React.FC = () => {
     };
 
     const onAddTab = () => {
-        add({});
+        create();
     }
 
     return (
@@ -52,8 +53,8 @@ const Tabs: React.FC = () => {
                             bg-dpad bg-no-repeat
                             p-4 block grow flex-1
                         `}>
-                            <MapXInput label="Trigger" />
-                            <MapXInput className="pt-2" label="Bumper" />
+                            <MapXInput label="Trigger" mappingIndex={index} mappingKey={XInput.LeftTrigger} mappingValue={mapping[XInput.LeftTrigger]} />
+                            <MapXInput className="pt-2" label="Bumper" mappingIndex={index} mappingKey={XInput.LeftBumper} mappingValue={mapping[XInput.LeftBumper]} />
                         </div>
                     );
                 })}

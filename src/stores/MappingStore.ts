@@ -1,18 +1,18 @@
 import { create } from 'zustand';
-
-export type Mapping = Record<string, unknown>;
+import { Mapping } from '../models/Mapping';
 
 type MappingStoreState = {
-    mappings: Array<Record<string, unknown>>,
-    add: (mapping: Mapping) => void,
+    mappings: Array<Mapping>,
+    create: () => void,
 }
 
 export const useMappingStore = create<MappingStoreState>((set) => ({
-    mappings: [{}],
-    add: (mapping) => {
-        set(state => ({
-            mappings: [...state.mappings, mapping]
-        }));
+    mappings: [<any> {}],
+    create: () => {
+      const mapping: Mapping = <any> {};
+      set(state => ({
+          mappings: [...state.mappings, mapping]
+      }));
     }
 }));
 
