@@ -1,41 +1,51 @@
 let waiting = false;
-let lastCallback: (() => void) | undefined;
+let lastKeydownCallback: ((ev: KeyboardEvent) => void) | undefined;
+let lastCancelCallback: (() => void) | undefined;
 
 const _handleKeyDown_waitForNext = (ev: KeyboardEvent): void => {
-    console.log('_handleKeyDown_waitForNext', ev);
-    console.log('_handleKeyDown_waitForNext', ev.code);
+    if (typeof lastKeydownCallback === 'function') {
+        lastKeydownCallback(ev);
+        lastKeydownCallback = undefined;
+    }
 
     waitForNext(true);
 }
 
-const waitForNext = (cancelWait: boolean | (() => void) = false, cancelCallback?: () => void): void => {
-    // Handle optional parameters.
-    if (typeof cancelWait === 'function') {
-        cancelCallback = cancelWait;
+export interface WaitForNextCallbacks {
+    keydownCallback?: (ev: KeyboardEvent) => void,
+    cancelCallback?: () => void,
+}
+
+const waitForNext = (cancelWait?: boolean | WaitForNextCallbacks, callbacks: WaitForNextCallbacks = {}): void => {
+    // Handle optional params.
+    if (typeof cancelWait === 'object') {
+        callbacks = cancelWait;
         cancelWait = false;
     }
 
-    if (cancelWait) {
+    // If we are cancelling waitForNext or we are already waiting.
+    if (cancelWait || waiting) {
         document.removeEventListener('keydown', _handleKeyDown_waitForNext);
         waiting = false;
 
-        if (typeof cancelCallback === 'function') {
-            cancelCallback();
+        if (typeof lastCancelCallback === 'function') {
+            lastCancelCallback();
+            lastCancelCallback = undefined;
         }
 
-        if (typeof lastCallback === 'function') {
-            lastCallback();
+        if (typeof callbacks.cancelCallback === 'function') {
+            callbacks.cancelCallback();
         }
 
-        return;
-    }
-
-    if (waiting) {
-        waitForNext(true);
+        // If we are just cancelling then do nothing else.
+        if (cancelWait) {
+            return;
+        }
     }
 
     document.addEventListener('keydown', _handleKeyDown_waitForNext);
-    lastCallback = cancelCallback;
+    lastKeydownCallback = callbacks.keydownCallback;
+    lastCancelCallback = callbacks.cancelCallback;
     waiting = true;
 }
 
