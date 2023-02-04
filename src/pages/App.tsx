@@ -1,7 +1,7 @@
 import React from 'react';
 import { FluentProvider, webLightTheme } from '@fluentui/react-components';
 import exampleMapping from '../example-xinput-mapping.json';
-import Tabs from '../components/Tabs';
+import Tabs from '../components/TabView';
 
 // import { create } from 'zustand';
 
@@ -113,7 +113,7 @@ import '../theme/styles.scss';
 const App: React.FC = () => {
     return (
         <FluentProvider theme={webLightTheme}>
-            <div className="min-h-screen h-screen /* w-screen */ max-w-screen-xl m-0 overflow-hidden viewport p-4">
+            <div className="min-h-screen h-screen /* w-screen */ max-w-screen-xl min-w-screen-xl ml-auto mr-auto m-0 overflow-hidden viewport p-4">
                 <Tabs />
             </div>
         </FluentProvider>

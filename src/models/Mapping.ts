@@ -23,6 +23,7 @@ export enum XInput {
     X = 'X',
     Start = 'Start',
     Back = 'Back',
+    Logo = 'Logo',
 }
 
 export interface Mapping {
@@ -48,4 +49,5 @@ export interface Mapping {
     [XInput.X]: string;             // Left Button
     [XInput.Start]: string;
     [XInput.Back]: string;
+    [XInput.Logo]: string;
 }

@@ -31,10 +31,7 @@ const waitForNext = (cancelWait?: boolean | WaitForNextCallbacks, callbacks: Wai
         if (typeof lastCancelCallback === 'function') {
             lastCancelCallback();
             lastCancelCallback = undefined;
-        }
-
-        if (typeof callbacks.cancelCallback === 'function') {
-            callbacks.cancelCallback();
+            lastKeydownCallback = undefined;
         }
 
         // If we are just cancelling then do nothing else.

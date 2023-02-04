@@ -1,0 +1,12 @@
+.bg-dpad {
+    background-image: url('../images/dpad.png');
+    background-position: 50% 100px;
+}
+
+img.dpad {
+    content: url('../images/dpad.png');
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    object-position: top;
+}

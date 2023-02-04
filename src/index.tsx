@@ -1,4 +1,8 @@
-import React from 'react';
+// Fix: "VM3427:2 Uncaught ReferenceError: process is not defined" on hot reload.
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    (window as any).process = {};
+}
+
 import ReactDOM from 'react-dom';
 
 import './index.scss';
