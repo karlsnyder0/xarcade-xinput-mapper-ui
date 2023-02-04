@@ -1,10 +1,4 @@
-import { MouseEventHandler, useState } from "react";
 import { Button, Dialog, DialogActions, DialogBody, DialogContent, DialogSurface, DialogTitle } from "@fluentui/react-components";
-
-export interface DeleteTabState {
-    showDeleteTab: boolean;
-    tabIndex?: number;
-}
 
 interface DeleteTabDialogProps {
     show: boolean;

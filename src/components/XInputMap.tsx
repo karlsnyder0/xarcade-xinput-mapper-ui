@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React, { MouseEventHandler, Ref, useState } from 'react';
 import { v4 } from 'uuid';
 import { makeStyles, Button, Input, Label, InputProps, InputOnChangeData } from '@fluentui/react-components';
 import { RecordFilled, DismissFilled } from '@fluentui/react-icons';
@@ -40,17 +40,11 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
     const [value, setValue] = useState<string>(props.mappingValue || '');
     const [recording, setRecording] = useState<boolean>(false);
 
-    const _onChange: InputProps['onChange'] = (ev, data) => {
-        onChange(ev, data, props);
-    };
+    const inputRef: Ref<HTMLInputElement> = React.createRef();
 
-    const onChange = (ev: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData, props: XInputMapProps) => {
-        console.log(ev);
-        console.log(data);
-        console.log(props);
-
+    const onChange = (value: string) => {
         const mapping: Mapping = read(props.mappingIndex);
-        mapping[props.mappingKey] = data.value;
+        mapping[props.mappingKey] = value;
 
         update(mapping, props.mappingIndex);
     };
@@ -76,6 +70,7 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
 
         setRecording(false);
         setValue(ev.key);
+        onChange(ev.key);
     }
 
     const onWaitForNextCancel = () => {
@@ -89,8 +84,8 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
                     {props.label}
                 </Label> : null 
             }
-            <Input className={styles.input} id={id} size="medium" defaultValue="" value={value} readOnly={true}
-                placeholder={recording ? 'Press a Key' : ''} onChange={_onChange} input={{ size: 10, style: {cursor: 'default'}}}
+            <Input className={styles.input} id={id} size="medium" value={value} ref={inputRef}
+                placeholder={recording ? 'Press a Key' : ''} input={{ size: 10, style: {cursor: 'default'}}}
                 contentAfter={
                     <>
                         <Button appearance="transparent" size="small" icon={<RecordFilled />} disabled={recording ? true : false} onClick={_onClickRecord} style={recording ? {color: 'red', cursor: 'default'} : undefined} />

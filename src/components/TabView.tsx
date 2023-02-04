@@ -7,7 +7,7 @@ import { ArrowUploadFilled, CopyRegular, DismissFilled, AddFilled } from '@fluen
 import { useMappingStore } from '../stores/MappingStore';
 
 import XInputMapView from './XInputMapView';
-import DeleteTabDialog, { DeleteTabState } from './DeleteTabDialog';
+import DeleteTabDialog from './DeleteTabDialog';
 
 import './TabView.scss';
 
