@@ -1,10 +1,10 @@
 import React, { MouseEventHandler, Ref, useState } from 'react';
 import { v4 } from 'uuid';
-import { makeStyles, Button, Input, Label, InputProps, InputOnChangeData } from '@fluentui/react-components';
-import { RecordFilled, DismissFilled } from '@fluentui/react-icons';
+import { makeStyles, Button, Input, Label } from '@fluentui/react-components';
+import { RecordRegular, RecordStopRegular, DismissFilled } from '@fluentui/react-icons';
 
 import KeyUtil from '../KeyUtil';
-import { Mapping, XInput } from '../models/Mapping';
+import { Mapping, resolveKeyName, XInputControllerInput } from '../models/Mapping';
 import { useMappingStore } from '../stores/MappingStore';
 
 import './XInputMap.scss';
@@ -18,7 +18,7 @@ interface XInputMapProps {
     className?: string;
     label: string;
     labelAlign?: LabelPosition.Left | LabelPosition.Right;
-    mappingKey: XInput;
+    mappingKey: XInputControllerInput;
     mappingIndex: number;
     mappingValue: string;
 }
@@ -36,41 +36,50 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
     const id = v4();
     const styles = useStyles();
 
-    const { read, update } = useMappingStore();
+    const {read, update} = useMappingStore();
     const [value, setValue] = useState<string>(props.mappingValue || '');
     const [recording, setRecording] = useState<boolean>(false);
 
     const inputRef: Ref<HTMLInputElement> = React.createRef();
 
-    const onChange = (value: string) => {
+    const onChange = (ev: KeyboardEvent) => {
+        const keyName = resolveKeyName(ev.code);
+
         const mapping: Mapping = read(props.mappingIndex);
-        mapping[props.mappingKey] = value;
+        mapping[props.mappingKey] = keyName;
 
         update(mapping, props.mappingIndex);
     };
 
-    const _onClickRecord: MouseEventHandler = () => {
-        setRecording(true);
+    const onClickClear: MouseEventHandler = () => {
+        const mapping: Mapping = read(props.mappingIndex);
+        delete mapping[props.mappingKey];
 
-        // Wait for next key key press.
-        KeyUtil.waitForNext({
-            keydownCallback: onWaitForNext,
-            cancelCallback: onWaitForNextCancel,
-        });
+        update(mapping, props.mappingIndex);
     }
 
-    const _onClickDismiss: MouseEventHandler = () => {
-        // Stop waiting.
-        KeyUtil.waitForNext(true);
+    const _onClickRecord: MouseEventHandler = () => {
+        if (recording) {
+            setRecording(false);
+
+            KeyUtil.cancelWaitForNext();
+        } else {
+            setRecording(true);
+    
+            // Wait for next key key press.
+            KeyUtil.waitForNext({
+                keydownCallback: onWaitForNext,
+                cancelCallback: onWaitForNextCancel,
+            });
+        }
     }
 
     const onWaitForNext = (ev: KeyboardEvent) => {
-        console.log('_handleKeyDown_waitForNext', ev);
-        console.log('_handleKeyDown_waitForNext', ev.code);
+        // console.log('_handleKeyDown_waitForNext', ev);
+        // console.log('_handleKeyDown_waitForNext', ev.code);
 
         setRecording(false);
-        setValue(ev.key);
-        onChange(ev.key);
+        onChange(ev);
     }
 
     const onWaitForNextCancel = () => {
@@ -84,12 +93,12 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
                     {props.label}
                 </Label> : null 
             }
-            <Input className={styles.input} id={id} size="medium" value={value} ref={inputRef}
+            <Input className={styles.input} id={id} size="medium" value={value} ref={inputRef} readOnly={true}
                 placeholder={recording ? 'Press a Key' : ''} input={{ size: 10, style: {cursor: 'default'}}}
                 contentAfter={
                     <>
-                        <Button appearance="transparent" size="small" icon={<RecordFilled />} disabled={recording ? true : false} onClick={_onClickRecord} style={recording ? {color: 'red', cursor: 'default'} : undefined} />
-                        <Button appearance="transparent" size="small" icon={<DismissFilled />} disabled={recording ? false : true} onClick={_onClickDismiss} style={recording ?  undefined : {cursor: 'default'}} />
+                        <Button appearance="transparent" size="small" icon={recording ? <RecordStopRegular style={{fontSize: '.85em'}} /> : <RecordRegular style={{fontSize: '.85em'}} />} onClick={_onClickRecord} style={Object.assign({ maxWidth: '22px', minWidth: '22px' }, recording ? { color: 'red' } : {})} />
+                        <Button appearance="transparent" size="small" icon={<DismissFilled style={{fontSize: '.85em'}} />} disabled={value && !recording ? false : true} onClick={onClickClear} style={Object.assign({ maxWidth: '22px', minWidth: '22px' }, value && !recording ? {} : { cursor: 'default' })} />
                     </>
                 } style={{cursor: 'default'}}
             />

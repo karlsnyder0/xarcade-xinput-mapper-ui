@@ -3,12 +3,19 @@ let lastKeydownCallback: ((ev: KeyboardEvent) => void) | undefined;
 let lastCancelCallback: (() => void) | undefined;
 
 const _handleKeyDown_waitForNext = (ev: KeyboardEvent): void => {
-    if (typeof lastKeydownCallback === 'function') {
-        lastKeydownCallback(ev);
-        lastKeydownCallback = undefined;
-    }
+    ev.preventDefault();
+    
+    // Immediately cancel.
+    cancelWaitForNext(true);
 
-    waitForNext(true);
+    if (typeof lastKeydownCallback === 'function') {
+        // First de-register the callback then execute.
+        const keydownCallback = lastKeydownCallback;
+        lastKeydownCallback = undefined;
+        lastCancelCallback = undefined;
+
+        keydownCallback(ev);
+    }
 }
 
 export interface WaitForNextCallbacks {
@@ -16,28 +23,10 @@ export interface WaitForNextCallbacks {
     cancelCallback?: () => void,
 }
 
-const waitForNext = (cancelWait?: boolean | WaitForNextCallbacks, callbacks: WaitForNextCallbacks = {}): void => {
-    // Handle optional params.
-    if (typeof cancelWait === 'object') {
-        callbacks = cancelWait;
-        cancelWait = false;
-    }
-
+const waitForNext = (callbacks: WaitForNextCallbacks = {}): void => {
     // If we are cancelling waitForNext or we are already waiting.
-    if (cancelWait || waiting) {
-        document.removeEventListener('keydown', _handleKeyDown_waitForNext);
-        waiting = false;
-
-        if (typeof lastCancelCallback === 'function') {
-            lastCancelCallback();
-            lastCancelCallback = undefined;
-            lastKeydownCallback = undefined;
-        }
-
-        // If we are just cancelling then do nothing else.
-        if (cancelWait) {
-            return;
-        }
+    if (waiting) {
+        cancelWaitForNext();
     }
 
     document.addEventListener('keydown', _handleKeyDown_waitForNext);
@@ -46,6 +35,21 @@ const waitForNext = (cancelWait?: boolean | WaitForNextCallbacks, callbacks: Wai
     waiting = true;
 }
 
+const cancelWaitForNext = (ignoreCallbacks = false): void => {
+    document.removeEventListener('keydown', _handleKeyDown_waitForNext);
+    waiting = false;
+
+    if (!ignoreCallbacks && typeof lastCancelCallback === 'function') {
+        // First de-register the callback then execute.
+        const cancelCallback = lastCancelCallback;
+        lastCancelCallback = undefined;
+        lastKeydownCallback = undefined;
+
+        cancelCallback();
+    }
+}
+
 export default {
     waitForNext,
+    cancelWaitForNext,
 }

@@ -10,16 +10,18 @@ import XInputMapView from './XInputMapView';
 import DeleteTabDialog from './DeleteTabDialog';
 
 import './TabView.scss';
+import { EventKeyToXInputKey, KeyName, XInputControllerInput, XInputKeyInput } from '../models/Mapping';
+import { copyToClipboard } from '../ClipboardUtil';
 
-const styles = {
-    labelContainer: {
-        width: "auto",
-        padding: 0
-    },
-    iconLabelWrapper: {
-        flexDirection: "row-reverse"
-    }
-};
+// const styles = {
+//     labelContainer: {
+//         width: "auto",
+//         padding: 0
+//     },
+//     iconLabelWrapper: {
+//         flexDirection: "row-reverse"
+//     }
+// };
 
 const Tabs: React.FC = () => {
     const { mappings, create } = useMappingStore();
@@ -35,7 +37,31 @@ const Tabs: React.FC = () => {
     }
 
     const onCopyClick = () => {
-        navigator.clipboard.writeText('Text copied to clipboard');
+        // copyToClipboard('Text copied to clipboard');
+
+        const xarcadeXinputMapping: {[key: string]: [index: number, controllerInput: string]} = {};
+
+        mappings.forEach((mapping, index) => {
+            Object.keys(mapping).forEach((controllerInput: string) => {
+                const eventKeyName: KeyName = (mapping[controllerInput] as KeyName);
+                const xInputKeyInput: string = EventKeyToXInputKey[eventKeyName];
+
+                if (!xInputKeyInput) {
+                    console.log(`Unable to find the XInputKeyInput for ${eventKeyName}`);
+                }
+
+                xarcadeXinputMapping[xInputKeyInput] = [index, controllerInput];
+
+                if ([XInputControllerInput.LeftStickXI,
+                    XInputControllerInput.LeftStickYI,
+                    XInputControllerInput.RightStickYI,
+                    XInputControllerInput.RightStickYI].indexOf((controllerInput as XInputControllerInput)) > -1) {
+                    xarcadeXinputMapping[xInputKeyInput].push(-1);
+                }
+            });
+        });
+
+        console.log(xarcadeXinputMapping);
     }
 
     const uploadInputRef: Ref<HTMLInputElement> = React.createRef();
@@ -56,8 +82,8 @@ const Tabs: React.FC = () => {
         if (files.length > 0) {
             const file = files[0];
 
-            const filemame = file.name;
-            const filesize = file.size;
+            // const filemame = file.name;
+            // const filesize = file.size;
 
             const fileReader = new FileReader();
             fileReader.onload = (e: ProgressEvent<FileReader>) => {
@@ -111,7 +137,7 @@ const Tabs: React.FC = () => {
                                 );
                             })}
                             <Tooltip content="Add Controller" relationship="label">
-                                <Button key={v4()} appearance="transparent" size="small" onClick={onAddTab} icon={<AddFilled style={{ color: 'black', fontSize: '.75em' }} />} />
+                                <Button key={v4()} appearance="transparent" size="small"  disabled={mappings.length >= 4} onClick={onAddTab} icon={<AddFilled style={Object.assign({ fontSize: '.75em' }, mappings.length >= 4 ? {} : { color: 'black' })} />} />
                             </Tooltip>
                             <div className="mt-auto mb-auto ml-auto">
                                 <Input name="input" hidden ref={uploadInputRef} accept="application/json" onChange={onFileChange} input={{ type: 'file' }} style={{ display: 'none' }} />

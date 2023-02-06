@@ -1,5 +1,6 @@
 // Fix: "VM3427:2 Uncaught ReferenceError: process is not defined" on hot reload.
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).process = {};
 }
 

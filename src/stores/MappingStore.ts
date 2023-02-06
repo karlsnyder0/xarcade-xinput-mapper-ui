@@ -21,7 +21,8 @@ export const useMappingStore = create<MappingStoreState>((set, get) => ({
       );
     },
     read: (index: number) => {
-      return get().mappings[index];
+      // Return an extensible copy.
+      return JSON.parse(JSON.stringify(get().mappings[index]));
     },
     update: (update: Mapping, index: number) => {
       set(
@@ -29,6 +30,13 @@ export const useMappingStore = create<MappingStoreState>((set, get) => ({
           if (index < draft.mappings.length) {
               const mapping: Mapping = draft.mappings[index];
               Object.assign(mapping, update);
+
+              // Remove any keys that don't exist in the update.
+              Object.keys(mapping).forEach((key) => {
+                if (!update[key]) {
+                  delete mapping[key];
+                }
+              });
           } else {
             console.error('No mapping found at index `${index}`.');
           }

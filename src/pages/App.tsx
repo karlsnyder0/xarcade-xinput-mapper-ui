@@ -1,6 +1,7 @@
 import React from 'react';
 import { FluentProvider, webLightTheme } from '@fluentui/react-components';
-import exampleMapping from '../example-xinput-mapping.json';
+
+// import exampleMapping from '../example-xinput-mapping.json';
 import Tabs from '../components/TabView';
 
 // import { create } from 'zustand';
