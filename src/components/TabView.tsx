@@ -1,17 +1,19 @@
-import React, { Ref, useState } from 'react';
+import React, { useState } from 'react';
 import { v4 } from 'uuid';
 
-import { Button, Input, InputOnChangeData, Overflow, OverflowItem, SelectTabData, SelectTabEvent, SelectTabEventHandler, Tab, TabList, Tooltip } from '@fluentui/react-components';
-import { ArrowUploadFilled, CopyRegular, DismissFilled, AddFilled } from '@fluentui/react-icons';
+import { Button, Overflow, OverflowItem, SelectTabData, SelectTabEvent, SelectTabEventHandler, Tab, TabList, Tooltip } from '@fluentui/react-components';
+import { CopyRegular, DismissFilled, AddFilled } from '@fluentui/react-icons';
 
 import { useMappingStore } from '../stores/MappingStore';
 
 import XInputMapView from './XInputMapView';
-import DeleteTabDialog from './DeleteTabDialog';
+import MessageDialog from './MessageDialog';
+
+import { exportMapping, setMappingStoreState } from '../util/MappingUtil';
+import { copyToClipboard } from '../util/ClipboardUtil';
 
 import './TabView.scss';
-import { EventKeyToXInputKey, KeyName, XInputControllerInput, XInputKeyInput } from '../models/Mapping';
-import { copyToClipboard } from '../ClipboardUtil';
+import UploadConfig from './UploadConfig';
 
 // const styles = {
 //     labelContainer: {
@@ -24,7 +26,9 @@ import { copyToClipboard } from '../ClipboardUtil';
 // };
 
 const Tabs: React.FC = () => {
-    const { mappings, create } = useMappingStore();
+    const mappingStoreState = useMappingStore();
+    const { mappings, create: createTab, delete: deleteTab } = mappingStoreState;
+    setMappingStoreState(mappingStoreState);
 
     const [currentTab, setCurrentTab] = useState<number>(1);
 
@@ -33,68 +37,17 @@ const Tabs: React.FC = () => {
     };
 
     const onAddTab = () => {
-        create();
+        createTab();
     }
 
+    // Copy config to Clipboard
     const onCopyClick = () => {
-        // copyToClipboard('Text copied to clipboard');
+        const xarcadeXinputMapping = exportMapping();
 
-        const xarcadeXinputMapping: {[key: string]: [index: number, controllerInput: string]} = {};
-
-        mappings.forEach((mapping, index) => {
-            Object.keys(mapping).forEach((controllerInput: string) => {
-                const eventKeyName: KeyName = (mapping[controllerInput] as KeyName);
-                const xInputKeyInput: string = EventKeyToXInputKey[eventKeyName];
-
-                if (!xInputKeyInput) {
-                    console.log(`Unable to find the XInputKeyInput for ${eventKeyName}`);
-                }
-
-                xarcadeXinputMapping[xInputKeyInput] = [index, controllerInput];
-
-                if ([XInputControllerInput.LeftStickXI,
-                    XInputControllerInput.LeftStickYI,
-                    XInputControllerInput.RightStickYI,
-                    XInputControllerInput.RightStickYI].indexOf((controllerInput as XInputControllerInput)) > -1) {
-                    xarcadeXinputMapping[xInputKeyInput].push(-1);
-                }
-            });
-        });
-
-        console.log(xarcadeXinputMapping);
+        copyToClipboard(JSON.stringify(xarcadeXinputMapping));
     }
 
-    const uploadInputRef: Ref<HTMLInputElement> = React.createRef();
-    const onUploadClick = () => {
-        uploadInputRef.current?.click();
-    }
-
-    const onFileChange = (ev: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
-        console.log(ev);
-        console.log(data);
-        console.log(uploadInputRef);
-
-        const files = ev.target.files;
-        if (!files) {
-            return;
-        }
-
-        if (files.length > 0) {
-            const file = files[0];
-
-            // const filemame = file.name;
-            // const filesize = file.size;
-
-            const fileReader = new FileReader();
-            fileReader.onload = (e: ProgressEvent<FileReader>) => {
-                console.log(e.target?.result);
-                // setTextValue(file);
-            };
-            fileReader.onerror = (e) => console.error(e.target?.error?.name);
-            fileReader.readAsText(file, "UTF-8");
-        }
-    }
-
+    // Delete Tab
     const [deleteMappingIndex, setDeleteMappingIndex] = useState<number | null>(null);
     const onDeleteTabConfirmation = (mappingIndex: number) => {
         setDeleteMappingIndex(mappingIndex);
@@ -105,13 +58,11 @@ const Tabs: React.FC = () => {
     }
 
     const onDeleteTab = () => {
-        // Delete Tab
-        alert('Delete Tab ' + deleteMappingIndex);
-
-        alert(currentTab);
-
         // Delete mapping.
         setCurrentTab(currentTab - 1);
+
+        // Delete Tab
+        deleteTab(deleteMappingIndex as number);
 
         onCancelDeleteTab();
     }
@@ -140,10 +91,7 @@ const Tabs: React.FC = () => {
                                 <Button key={v4()} appearance="transparent" size="small"  disabled={mappings.length >= 4} onClick={onAddTab} icon={<AddFilled style={Object.assign({ fontSize: '.75em' }, mappings.length >= 4 ? {} : { color: 'black' })} />} />
                             </Tooltip>
                             <div className="mt-auto mb-auto ml-auto">
-                                <Input name="input" hidden ref={uploadInputRef} accept="application/json" onChange={onFileChange} input={{ type: 'file' }} style={{ display: 'none' }} />
-                                <Tooltip content="Upload Config" relationship="label">
-                                    <Button appearance="transparent" size="small" icon={<ArrowUploadFilled />} onClick={onUploadClick} />
-                                </Tooltip>
+                                <UploadConfig />
                                 <Tooltip content="Copy Config to Clipboard" relationship="label">
                                     <Button appearance="transparent" size="small" icon={<CopyRegular />} onClick={onCopyClick} />
                                 </Tooltip>
@@ -159,7 +107,11 @@ const Tabs: React.FC = () => {
                     );
                 })}
             </div>
-            <DeleteTabDialog show={!!deleteMappingIndex} onCancel={onCancelDeleteTab} onDelete={onDeleteTab} />
+            <MessageDialog title="Delete Controller"
+                message="Are you sure you want to delete this controller?  All mapped inputs will be lost!"
+                show={!!deleteMappingIndex} 
+                cancelButtonText="Cancel" onCancel={onCancelDeleteTab}
+                okButtonText="Delete" onOk={onDeleteTab} />
         </>
     );
 };

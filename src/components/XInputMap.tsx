@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 import { makeStyles, Button, Input, Label } from '@fluentui/react-components';
 import { RecordRegular, RecordStopRegular, DismissFilled } from '@fluentui/react-icons';
 
-import KeyUtil from '../KeyUtil';
+import KeyUtil from '../util/KeyUtil';
 import { Mapping, resolveKeyName, XInputControllerInput } from '../models/Mapping';
 import { useMappingStore } from '../stores/MappingStore';
 
@@ -37,7 +37,7 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
     const styles = useStyles();
 
     const {read, update} = useMappingStore();
-    const [value, setValue] = useState<string>(props.mappingValue || '');
+    const [value] = useState<string>(props.mappingValue || '');
     const [recording, setRecording] = useState<boolean>(false);
 
     const inputRef: Ref<HTMLInputElement> = React.createRef();

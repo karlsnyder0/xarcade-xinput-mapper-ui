@@ -3,7 +3,7 @@ import produce from 'immer';
 
 import { Mapping } from '../models/Mapping';
 
-type MappingStoreState = {
+export type MappingStoreState = {
     mappings: Array<Mapping>,
     create: () => void,
     read: (index: number) => Mapping,

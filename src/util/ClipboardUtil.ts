@@ -21,7 +21,7 @@ const unsecuredCopyToClipboard = (content: string) => {
  * Check if using HTTPS and navigator.clipboard is available
  * Then uses standard clipboard API, otherwise uses fallback
 */
-const copyToClipboard = (content: string) => {
+const copyToClipboard = (content: string): void => {
     if (window.isSecureContext && navigator.clipboard) {
         navigator.clipboard.writeText(content);
     } else {

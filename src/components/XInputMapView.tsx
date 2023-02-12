@@ -55,9 +55,9 @@ const XInputMapView: React.FC<XInputMapViewProps> = (props: XInputMapViewProps) 
                     <XInputMap className="pt-2" label="Trigger" labelAlign={LabelPosition.Left} mappingIndex={index} mappingKey={XInputControllerInput.RightTrigger} mappingValue={mapping[XInputControllerInput.RightTrigger]} />
                     <XInputMap className="pt-2" label="Bumper" labelAlign={LabelPosition.Left} mappingIndex={index} mappingKey={XInputControllerInput.RightBumper} mappingValue={mapping[XInputControllerInput.RightBumper]} />
                     <XInputMap className="pt-2" label="Up" labelAlign={LabelPosition.Left} mappingIndex={index} mappingKey={XInputControllerInput.RightStickY} mappingValue={mapping[XInputControllerInput.RightStickY]} />
-                    <XInputMap className="pt-2" label="Right" labelAlign={LabelPosition.Left} mappingIndex={index} mappingKey={XInputControllerInput.RightStickX} mappingValue={mapping[XInputControllerInput.RightStickX]} />
                     <XInputMap className="pt-2" label="Down" labelAlign={LabelPosition.Left} mappingIndex={index} mappingKey={XInputControllerInput.RightStickYI} mappingValue={mapping[XInputControllerInput.RightStickYI]} />
                     <XInputMap className="pt-2" label="Left" labelAlign={LabelPosition.Left} mappingIndex={index} mappingKey={XInputControllerInput.RightStickXI} mappingValue={mapping[XInputControllerInput.RightStickXI]} />
+                    <XInputMap className="pt-2" label="Right" labelAlign={LabelPosition.Left} mappingIndex={index} mappingKey={XInputControllerInput.RightStickX} mappingValue={mapping[XInputControllerInput.RightStickX]} />
                 </div>
                 <div className="p-4">
                     <Text block={true} align="end"><span className="font-bold uppercase text-xl">Buttons</span></Text>
