@@ -1,3 +1,8 @@
 .viewport {
     background-color: #F0F0F0;
 }
+
+// Disable FUI focus treatment
+*[data-fui-focus-visible] {
+    box-shadow: none !important;
+}

@@ -1,7 +1,9 @@
 {
-  "name": "react-fluentui-tailwind-boilerplate",
+  "name": "xarcade-xinput-mapper-ui",
   "version": "1.0.0",
   "description": "",
+  "productName": "XaXiMapper",
+  "displayName": "XaXiMapper",
   "main": "index.js",
   "author": "",
   "license": "ISC",
@@ -9,6 +11,7 @@
     "node": "^14"
   },
   "dependencies": {
+    "@capacitor-community/electron": "^4.1.2",
     "@fluentui/react-components": "^9.15.0",
     "@fluentui/react-icons": "^2.0.194",
     "@ionic/react": "5.5.2",
@@ -67,7 +70,8 @@
     "eject": "craco eject",
     "lint": "craco lint",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build:storybook": "build-storybook -s public",
+    "start:electron": "npx cap copy electron && npx cap open @capacitor-community/electron"
   },
   "eslintConfig": {
     "extends": [
