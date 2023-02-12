@@ -9,6 +9,8 @@
     "node": "^14"
   },
   "dependencies": {
+    "@fluentui/react-components": "^9.15.0",
+    "@fluentui/react-icons": "^2.0.194",
     "@ionic/react": "5.5.2",
     "@ionic/react-router": "5.5.2",
     "immer": "^9.0.19",
@@ -21,10 +23,9 @@
     "zustand": "^4.3.2"
   },
   "devDependencies": {
-    "@capacitor/cli": "2.4.6",
-    "@capacitor/core": "2.4.6",
+    "@capacitor/cli": "^3.9.0",
+    "@capacitor/core": "^3.9.0",
     "@craco/craco": "^6.1.2",
-    "@fluentui/react-components": "^9.12.0",
     "@fullhuman/postcss-purgecss": "^5.0.0",
     "@storybook/addon-actions": "^6.1.20",
     "@storybook/addon-essentials": "^6.1.20",

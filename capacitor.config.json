@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "react-fluentui-tailwind-boilerplate",
+  "appName": "xarcade-xinput-mapper-ui",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
