@@ -18,8 +18,10 @@
     "allowToChangeInstallationDirectory": true
   },
   "win": {
-    "target": "nsis",
-    "icon": "assets/appIcon.ico"
+    "target": "zip",
+    "icon": "assets/appIcon.ico",
+    "artifactName": "XaXiMapper-${arch}.${ext}",
+    "signAndEditExecutable": false
   },
   "mac": {
     "category": "your.app.category.type",

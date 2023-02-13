@@ -18,9 +18,12 @@
     "build": "tsc && electron-rebuild",
     "electron:start-live": "node ./live-runner.js",
     "electron:start": "npm run build && electron --inspect=5858 ./",
-    "electron:pack": "npm run build && electron-builder build -m -w --x64 --arm64 --dir -c ./electron-builder.config.json",
-    "electron:pack:win": "npm run build && electron-builder build -w --x64 --arm64 --dir -c ./electron-builder.config.json",
-    "electron:make": "npm run build && electron-builder build -m -w --x64 --arm64 -c ./electron-builder.config.json -p always"
+    "electron:docker:run": "zsh ./scripts/docker-win.sh",
+    "electron:docker:postrun": "yarn",
+    "electron:pack:win": "npm run build && electron-builder build -w --x64 --arm64 --ia32 -c ./electron-builder.config.json",
+    "electron:pack:win:unpacked": "npm run build && electron-builder build -w --x64 --arm64 --ia32 --dir -c ./electron-builder.config.json",
+    "electron:pack:mac": "npm run build && electron-builder build -m --x64 --arm64 --dir -c ./electron-builder.config.json",
+    "electron:make:win": "npm run build && electron-builder build -w --x64 --arm64 --ia32 --dir -c ./electron-builder.config.json -p always"
   },
   "dependencies": {
     "@capacitor-community/electron": "^4.1.1",
