@@ -1,4 +1,4 @@
-# xarcade-xinput-mapper-ui
+# X-Arcade XInput Mapper UI
 
 UI for mapping conifguration files for [X-Arcade XInput](https://github.com/mikew/xarcade-xinput)
 
