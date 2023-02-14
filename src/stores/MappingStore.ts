@@ -5,6 +5,7 @@ import { Mapping } from '../models/Mapping';
 
 export type MappingStoreState = {
     mappings: Array<Mapping>,
+    count: () => number,
     create: () => void,
     read: (index: number) => Mapping,
     update: (update: Mapping, index: number) => void,
@@ -13,6 +14,9 @@ export type MappingStoreState = {
 
 export const useMappingStore = create<MappingStoreState>((set, get) => ({
     mappings: [<Mapping> {}],
+    count: () => {
+      return get().mappings.length;
+    },
     create: () => {
       set(
         produce<MappingStoreState>((draft) => {

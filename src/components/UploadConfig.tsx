@@ -38,7 +38,7 @@ const UploadConfig: React.FC = () => {
     }
 
     // Upload Config Confirmation
-    const [loadConfig, setLoadConfig] = useState<string | null>(null);
+    const [ loadConfig, setLoadConfig ] = useState<string | null>(null);
 
     const doLoadConfig = (config: string) => {
         setLoadConfig(config);
@@ -59,7 +59,7 @@ const UploadConfig: React.FC = () => {
         <>
             <Input hidden ref={uploadInputRef} accept="application/json" onChange={onFileChange} value={''} input={{ type: 'file' }} style={{ display: 'none' }} />
             <Tooltip content="Upload Config" relationship="label">
-                <Button appearance="transparent" size="small" icon={<ArrowUploadFilled />} onClick={onUploadClick} />
+                <Button hidden={true} appearance="transparent" size="small" icon={<ArrowUploadFilled />} onClick={onUploadClick} />
             </Tooltip>
             <MessageDialog title="Load Config"
                 message="Are you sure you want to load a new configuration?  All mapped inputs will be lost!"

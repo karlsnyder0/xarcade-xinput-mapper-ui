@@ -363,50 +363,50 @@ const KeyNameMap = Object.keys(KeyName).reduce((o: {[key: string]: string}, key)
     return o;
 }, {})
 
-const KeyNameToKey: {[key: string]: string} = {
-    [KeyName.Digit1]: '1',
-    [KeyName.Digit2]: '2',
-    [KeyName.Digit3]: '3',
-    [KeyName.Digit4]: '4',
-    [KeyName.Digit5]: '5',
-    [KeyName.Digit6]: '6',
-    [KeyName.Digit7]: '7',
-    [KeyName.Digit8]: '8',
-    [KeyName.Digit9]: '9',
-    [KeyName.Digit0]: '0',
-    [KeyName.KeyA]: 'A',
-    [KeyName.KeyB]: 'B',
-    [KeyName.KeyC]: 'C',
-    [KeyName.KeyD]: 'D',
-    [KeyName.KeyE]: 'E',
-    [KeyName.KeyF]: 'F',
-    [KeyName.KeyG]: 'G',
-    [KeyName.KeyH]: 'H',
-    [KeyName.KeyI]: 'I',
-    [KeyName.KeyJ]: 'J',
-    [KeyName.KeyK]: 'K',
-    [KeyName.KeyL]: 'L',
-    [KeyName.KeyM]: 'M',
-    [KeyName.KeyN]: 'N',
-    [KeyName.KeyO]: 'O',
-    [KeyName.KeyP]: 'P',
-    [KeyName.KeyQ]: 'Q',
-    [KeyName.KeyR]: 'R',
-    [KeyName.KeyS]: 'S',
-    [KeyName.KeyT]: 'T',
-    [KeyName.KeyU]: 'U',
-    [KeyName.KeyV]: 'V',
-    [KeyName.KeyW]: 'W',
-    [KeyName.KeyX]: 'X',
-    [KeyName.KeyY]: 'Y',
-    [KeyName.KeyZ]: 'X',
-    [KeyName.Unknown]: '',
-}
+// const KeyNameToKey: {[key: string]: string} = {
+//     [KeyName.Digit1]: '1',
+//     [KeyName.Digit2]: '2',
+//     [KeyName.Digit3]: '3',
+//     [KeyName.Digit4]: '4',
+//     [KeyName.Digit5]: '5',
+//     [KeyName.Digit6]: '6',
+//     [KeyName.Digit7]: '7',
+//     [KeyName.Digit8]: '8',
+//     [KeyName.Digit9]: '9',
+//     [KeyName.Digit0]: '0',
+//     [KeyName.KeyA]: 'A',
+//     [KeyName.KeyB]: 'B',
+//     [KeyName.KeyC]: 'C',
+//     [KeyName.KeyD]: 'D',
+//     [KeyName.KeyE]: 'E',
+//     [KeyName.KeyF]: 'F',
+//     [KeyName.KeyG]: 'G',
+//     [KeyName.KeyH]: 'H',
+//     [KeyName.KeyI]: 'I',
+//     [KeyName.KeyJ]: 'J',
+//     [KeyName.KeyK]: 'K',
+//     [KeyName.KeyL]: 'L',
+//     [KeyName.KeyM]: 'M',
+//     [KeyName.KeyN]: 'N',
+//     [KeyName.KeyO]: 'O',
+//     [KeyName.KeyP]: 'P',
+//     [KeyName.KeyQ]: 'Q',
+//     [KeyName.KeyR]: 'R',
+//     [KeyName.KeyS]: 'S',
+//     [KeyName.KeyT]: 'T',
+//     [KeyName.KeyU]: 'U',
+//     [KeyName.KeyV]: 'V',
+//     [KeyName.KeyW]: 'W',
+//     [KeyName.KeyX]: 'X',
+//     [KeyName.KeyY]: 'Y',
+//     [KeyName.KeyZ]: 'X',
+//     [KeyName.Unknown]: '',
+// }
 
-const KeyToKeyName = Object.keys(KeyNameToKey).reduce((ret: {[key: string]: string}, key) => {
-    ret[KeyNameToKey[key]] = key;
-    return ret;
-}, {});
+// const KeyToKeyName = Object.keys(KeyNameToKey).reduce((ret: {[key: string]: string}, key) => {
+//     ret[KeyNameToKey[key]] = key;
+//     return ret;
+// }, {});
 
 export const XInputKeyToEventKeyName: {[key: string]: string} = {
     [XInputKeyInput.A]: KeyName.KeyA,
@@ -623,4 +623,14 @@ export const resolveKeyName = (keyboardEventCode: string): KeyName => {
     console.log(`Unknown EventKeyCode ${keyboardEventCode}`);
 
     return KeyName.Unknown;
+}
+
+export const resolveKeyCode = (keyName: KeyName): string | null => {
+    if (KeyName[keyName]) {
+        return <string> KeyName[keyName];
+    }
+
+    console.log(`Unknown KeyName ${keyName}`);
+
+    return null;
 }

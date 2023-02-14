@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { v4 } from 'uuid';
+import isElectron from 'is-electron';
 
 import { Button, Overflow, OverflowItem, SelectTabData, SelectTabEvent, SelectTabEventHandler, Tab, TabList, Tooltip } from '@fluentui/react-components';
 import { CopyRegular, DismissFilled, AddFilled } from '@fluentui/react-icons';
@@ -9,23 +10,12 @@ import { useMappingStore } from '../stores/MappingStore';
 import XInputMapView from './XInputMapView';
 import MessageDialog from './MessageDialog';
 
-import { exportMapping, setMappingStoreState } from '../util/MappingUtil';
+import { saveMappingConfig, setMappingStoreState } from '../util/MappingUtil';
 import { copyToClipboard } from '../util/ClipboardUtil';
 
-import './TabView.scss';
 import UploadConfig from './UploadConfig';
 
-// const styles = {
-//     labelContainer: {
-//         width: "auto",
-//         padding: 0
-//     },
-//     iconLabelWrapper: {
-//         flexDirection: "row-reverse"
-//     }
-// };
-
-const Tabs: React.FC = () => {
+const TabView: React.FC = () => {
     const mappingStoreState = useMappingStore();
     const { mappings, create: createTab, delete: deleteTab } = mappingStoreState;
     setMappingStoreState(mappingStoreState);
@@ -42,9 +32,8 @@ const Tabs: React.FC = () => {
 
     // Copy config to Clipboard
     const onCopyClick = () => {
-        const xarcadeXinputMapping = exportMapping();
-
-        copyToClipboard(JSON.stringify(xarcadeXinputMapping));
+        const content = saveMappingConfig();
+        copyToClipboard(content);
     }
 
     // Delete Tab
@@ -75,7 +64,6 @@ const Tabs: React.FC = () => {
                         <TabList selectedValue={currentTab} onTabSelect={onTabSelect}>
                             { mappings.map((mapping, index) => {
                                 const id = index + 1;
-
                                 return (
                                     <OverflowItem key={v4()} id={`${id}`} priority={currentTab === id ? 2 : 1}>
                                         <Tab value={id} icon={index > 0 ?
@@ -91,10 +79,14 @@ const Tabs: React.FC = () => {
                                 <Button key={v4()} appearance="transparent" size="small"  disabled={mappings.length >= 4} onClick={onAddTab} icon={<AddFilled style={Object.assign({ fontSize: '.75em' }, mappings.length >= 4 ? {} : { color: 'black' })} />} />
                             </Tooltip>
                             <div className="mt-auto mb-auto ml-auto">
-                                <UploadConfig />
-                                <Tooltip content="Copy Config to Clipboard" relationship="label">
-                                    <Button appearance="transparent" size="small" icon={<CopyRegular />} onClick={onCopyClick} />
-                                </Tooltip>
+                                {isElectron() ? '' : (
+                                    <>
+                                        <UploadConfig />
+                                        <Tooltip content="Copy Config to Clipboard" relationship="label">
+                                            <Button appearance="transparent" size="small" icon={<CopyRegular />} onClick={onCopyClick} />
+                                        </Tooltip>
+                                    </>
+                                )}
                             </div>
                         </TabList>
                     </Overflow>
@@ -116,4 +108,4 @@ const Tabs: React.FC = () => {
     );
 };
 
-export default Tabs;
+export default TabView;

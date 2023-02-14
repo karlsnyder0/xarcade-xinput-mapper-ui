@@ -1,7 +1,7 @@
 {
   "name": "xarcade-xinput-mapper-ui",
   "version": "1.0.0",
-  "description": "",
+  "description": "XArcade XInput Mapper UI",
   "productName": "XaXiMapper",
   "displayName": "XaXiMapper",
   "main": "index.js",
@@ -19,10 +19,12 @@
     "beautiful-react-hooks": "^3.12.2",
     "immer": "^9.0.19",
     "ionicons": "5.3.0",
+    "is-electron": "^2.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "shared": "file:./shared",
     "uuid": "^9.0.0",
     "zustand": "^4.3.2"
   },
@@ -64,6 +66,9 @@
     "typescript": "4.1.3"
   },
   "scripts": {
+    "preinstall": "npm --prefix ./shared install && npm run sharedbuild",
+    "sharedbuild": "npm --prefix ./shared run build",
+    "sharedupdate": "npm update shared",
     "start": "TAILWIND_MODE=watch BROWSER='google chrome' BROWSER_ARGS='--remote-debugging-port=9222' craco start",
     "build": "craco build",
     "test": "craco test",
@@ -71,7 +76,7 @@
     "lint": "craco lint",
     "storybook": "start-storybook -p 6006 -s public",
     "build:storybook": "build-storybook -s public",
-    "start:electron": "npx cap copy electron && npx cap open @capacitor-community/electron"
+    "electron:start": "npx cap copy electron && npx cap open @capacitor-community/electron"
   },
   "eslintConfig": {
     "extends": [

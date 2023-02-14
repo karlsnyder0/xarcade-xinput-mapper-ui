@@ -13,10 +13,13 @@ unhandled();
 
 // Define our menu templates (these are optional)
 const trayMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [new MenuItem({ label: 'Quit App', role: 'quit' })];
-const appMenuBarMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [
-  { role: process.platform === 'darwin' ? 'appMenu' : 'fileMenu' },
-  { role: 'viewMenu' },
-];
+// const appMenuBarMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [
+//   { role: process.platform === 'darwin' ? 'appMenu' : 'fileMenu' },
+//   { role: 'viewMenu' },
+// ];
+
+// Custom menu
+import { appMenuBarMenuTemplate } from './custom/menu';
 
 // Get Config options from capacitor.config
 const capacitorFileConfig: CapacitorElectronConfig = getCapacitorElectronConfig();
@@ -68,4 +71,7 @@ app.on('activate', async function () {
 });
 
 // Place all ipc or other electron api calls and custom functionality under this line
-import './custom/index-custom';
+import { setCapacitorApp } from './custom/menu-actions';
+setCapacitorApp(myCapacitorApp);
+
+import './custom/index';
