@@ -158,6 +158,9 @@ export enum KeyName {
     NumpadMultiply = 'NumpadMultiply',
     NumpadSubtract = 'NumpadSubtract',
 
+    MetaLeft = 'MetaLeft',
+    MetaRight = 'MetaRight',
+
     Unknown = 'Unknown',
 }
 
@@ -507,7 +510,7 @@ export const XInputKeyToEventKeyName: {[key: string]: string} = {
     [XInputKeyInput.LControlKey]: KeyName.ControlLeft,
     [XInputKeyInput.Left]: KeyName.ArrowLeft,
     [XInputKeyInput.LineFeed]: KeyName.Unknown,
-    [XInputKeyInput.LMenu]: KeyName.Unknown,
+    [XInputKeyInput.LMenu]: KeyName.MetaLeft,
     [XInputKeyInput.LShiftKey]: KeyName.ShiftLeft,
     [XInputKeyInput.LWin]: KeyName.Unknown,
     [XInputKeyInput.M]: KeyName.KeyM,
@@ -539,17 +542,17 @@ export const XInputKeyToEventKeyName: {[key: string]: string} = {
     [XInputKeyInput.Oem102]: KeyName.Unknown,
     [XInputKeyInput.Oem2]: KeyName.Unknown,
     [XInputKeyInput.Oem3]: KeyName.Unknown,
-    [XInputKeyInput.Oem4]: KeyName.Unknown,
+    [XInputKeyInput.Oem4]: KeyName.BracketLeft,
     [XInputKeyInput.Oem5]: KeyName.Unknown,
-    [XInputKeyInput.Oem6]: KeyName.Unknown,
+    [XInputKeyInput.Oem6]: KeyName.BracketRight,
     [XInputKeyInput.Oem7]: KeyName.Unknown,
     [XInputKeyInput.Oem8]: KeyName.Unknown,
     [XInputKeyInput.OemBackslash]: KeyName.Unknown,
     [XInputKeyInput.OemClear]: KeyName.Unknown,
-    [XInputKeyInput.OemCloseBrackets]: KeyName.Unknown,
+    [XInputKeyInput.OemCloseBrackets]: KeyName.BracketRight,
     [XInputKeyInput.Oemcomma]: KeyName.Unknown,
     [XInputKeyInput.OemMinus]: KeyName.Unknown,
-    [XInputKeyInput.OemOpenBrackets]: KeyName.Unknown,
+    [XInputKeyInput.OemOpenBrackets]: KeyName.BracketLeft,
     [XInputKeyInput.OemPeriod]: KeyName.Unknown,
     [XInputKeyInput.OemPipe]: KeyName.Unknown,
     [XInputKeyInput.Oemplus]: KeyName.Unknown,
@@ -574,7 +577,7 @@ export const XInputKeyToEventKeyName: {[key: string]: string} = {
     [XInputKeyInput.RControlKey]: KeyName.ControlRight,
     [XInputKeyInput.Return]: KeyName.Unknown,
     [XInputKeyInput.Right]: KeyName.ArrowRight,
-    [XInputKeyInput.RMenu]: KeyName.Unknown,
+    [XInputKeyInput.RMenu]: KeyName.MetaRight,
     [XInputKeyInput.RShiftKey]: KeyName.ShiftRight,
     [XInputKeyInput.RWin]: KeyName.Unknown,
     [XInputKeyInput.S]: KeyName.KeyS,
@@ -586,7 +589,7 @@ export const XInputKeyToEventKeyName: {[key: string]: string} = {
     [XInputKeyInput.ShiftKey]: KeyName.Unknown,
     [XInputKeyInput.Sleep]: KeyName.Unknown,
     [XInputKeyInput.Snapshot]: KeyName.Unknown,
-    [XInputKeyInput.Space]: KeyName.Unknown,
+    [XInputKeyInput.Space]: KeyName.Space,
     [XInputKeyInput.Subtract]: KeyName.NumpadSubtract,
     [XInputKeyInput.T]: KeyName.KeyT,
     [XInputKeyInput.Tab]: KeyName.Unknown,
@@ -613,7 +616,6 @@ export const EventKeyToXInputKey = Object.keys(XInputKeyToEventKeyName).reduce((
 EventKeyToXInputKey[KeyName.Alt] = XInputKeyToEventKeyName.Alt;
 EventKeyToXInputKey[KeyName.AltLeft] = XInputKeyToEventKeyName.Alt;
 EventKeyToXInputKey[KeyName.AltRight] = XInputKeyToEventKeyName.Alt;
-
 
 export const resolveKeyName = (keyboardEventCode: string): KeyName => {
     if (KeyNameMap[keyboardEventCode]) {
