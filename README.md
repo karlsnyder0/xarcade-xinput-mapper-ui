@@ -1,4 +1,6 @@
-# react-fluentui-tailwind-boilerplate
+# xarcade-xinput-mapper-ui
+
+UI for mapping conifguration files for [X-Arcade XInput](https://github.com/mikew/xarcade-xinput)
 
 # Controller Inputs (XInput)
 
