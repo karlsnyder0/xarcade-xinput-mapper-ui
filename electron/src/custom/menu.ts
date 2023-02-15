@@ -2,10 +2,11 @@ import { MenuItemConstructorOptions } from 'electron';
 import { app, MenuItem } from 'electron';
 import { fileOpen, fileSaveAs } from './menu-actions';
 
-export const appMenuBarMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [
-  { role: process.platform === 'darwin' ? 'appMenu' : 'fileMenu' },
-  { role: 'viewMenu' },
-];
+export const appMenuBarMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [];
+
+if (process.platform === 'darwin') {
+    appMenuBarMenuTemplate.push({ role: 'appMenu' });
+}
 
 const template: MenuItemConstructorOptions = {
     label: 'File',
@@ -17,7 +18,7 @@ const template: MenuItemConstructorOptions = {
         label: 'Save As...',
         click: fileSaveAs,
     }, {
-        label: 'Quit',
+        label: process.platform === 'darwin' ? 'Quit' : 'Exit',
         accelerator: 'CmdOrCtrl+Q',
         click: () => {
             // Quit the app
@@ -26,4 +27,6 @@ const template: MenuItemConstructorOptions = {
     }]
 };
 
-appMenuBarMenuTemplate.splice(1, 0, template);
+appMenuBarMenuTemplate.push(template);
+
+appMenuBarMenuTemplate.push({ role: 'viewMenu' });

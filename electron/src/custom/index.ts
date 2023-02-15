@@ -15,6 +15,10 @@ app.on('will-quit', () => {
     globalShortcut.unregister('Tab');
 });
 
+app.on('window-all-closed', async () => {
+    app.quit();
+});
+
 // Save File
 ipcMain.on(IPC_CHANNEL.FILE_SAVE_AS, (event, filePath: string, fileContents: string) => {
     saveFile(filePath, fileContents);

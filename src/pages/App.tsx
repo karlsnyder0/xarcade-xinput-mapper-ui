@@ -11,7 +11,7 @@ import '../theme/styles.scss';
 const App: React.FC = () => {
     return (
         <FluentProvider theme={webLightTheme}>
-            <div className="min-h-screen h-screen /* w-screen */ max-w-screen-xl min-w-screen-xl ml-auto mr-auto m-0 overflow-hidden viewport p-4">
+            <div className="min-h-screen h-screen w-full min-w-screen-lg ml-auto mr-auto m-0 overflow-hidden viewport p-4">
                 <TabView />
             </div>
         </FluentProvider>
