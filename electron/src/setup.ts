@@ -103,7 +103,7 @@ export class ElectronCapacitorApp {
     );
     this.mainWindowState = windowStateKeeper({
       defaultWidth: 1024,
-      defaultHeight: 640,
+      defaultHeight: 640 + (process.platform === 'win32' ? 19 : 0),
     });
     // Setup preload script path and construct our main window.
     const preloadPath = join(app.getAppPath(), 'build', 'src', 'preload.js');
@@ -115,7 +115,7 @@ export class ElectronCapacitorApp {
       width: this.mainWindowState.width,
       height: this.mainWindowState.height,
       minWidth: 1024,
-      minHeight: 640,
+      minHeight: 640 + (process.platform === 'win32' ? 19 : 0),
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: true,

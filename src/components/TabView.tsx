@@ -14,6 +14,7 @@ import { saveMappingConfig, setMappingStoreState } from '../util/MappingUtil';
 import { copyToClipboard } from '../util/ClipboardUtil';
 
 import UploadConfig from './UploadConfig';
+import TestInput from './TestInput';
 
 const TabView: React.FC = () => {
     const mappingStoreState = useMappingStore();
@@ -79,7 +80,8 @@ const TabView: React.FC = () => {
                                 <Button key={v4()} appearance="transparent" size="small"  disabled={mappings.length >= 4} onClick={onAddTab} icon={<AddFilled style={Object.assign({ fontSize: '.75em' }, mappings.length >= 4 ? {} : { color: 'black' })} />} />
                             </Tooltip>
                             <div className="mt-auto mb-auto ml-auto">
-                                {isElectron() ? '' : (
+                                    <TestInput />
+                                    {isElectron() ? '' : (
                                     <>
                                         <UploadConfig />
                                         <Tooltip content="Copy Config to Clipboard" relationship="label">
