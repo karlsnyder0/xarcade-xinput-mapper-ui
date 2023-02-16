@@ -2,6 +2,8 @@
 
 UI for mapping conifguration files for [X-Arcade XInput](https://github.com/mikew/xarcade-xinput)
 
+![X-Arcade Xinput Mapper](docs/XaXiMapper.png)
+
 # Controller Inputs (XInput)
 
 ## LEFT
