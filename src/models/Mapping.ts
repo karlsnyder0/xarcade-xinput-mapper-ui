@@ -512,7 +512,7 @@ export const XInputKeyToEventKeyName: {[key: string]: string} = {
     [XInputKeyInput.LControlKey]: KeyName.ControlLeft,
     [XInputKeyInput.Left]: KeyName.ArrowLeft,
     [XInputKeyInput.LineFeed]: KeyName.Unknown,
-    [XInputKeyInput.LMenu]: KeyName.MetaLeft,
+    [XInputKeyInput.LMenu]: KeyName.AltLeft,
     [XInputKeyInput.LShiftKey]: KeyName.ShiftLeft,
     [XInputKeyInput.LWin]: KeyName.Unknown,
     [XInputKeyInput.M]: KeyName.KeyM,
@@ -579,7 +579,7 @@ export const XInputKeyToEventKeyName: {[key: string]: string} = {
     [XInputKeyInput.RControlKey]: KeyName.ControlRight,
     [XInputKeyInput.Return]: KeyName.Unknown,
     [XInputKeyInput.Right]: KeyName.ArrowRight,
-    [XInputKeyInput.RMenu]: KeyName.MetaRight,
+    [XInputKeyInput.RMenu]: KeyName.AltRight,
     [XInputKeyInput.RShiftKey]: KeyName.ShiftRight,
     [XInputKeyInput.RWin]: KeyName.Unknown,
     [XInputKeyInput.S]: KeyName.KeyS,
@@ -614,10 +614,6 @@ export const EventKeyToXInputKey = Object.keys(XInputKeyToEventKeyName).reduce((
     ret[XInputKeyToEventKeyName[key]] = key;
     return ret;
 }, {});
-
-EventKeyToXInputKey[KeyName.Alt] = XInputKeyToEventKeyName.Alt;
-EventKeyToXInputKey[KeyName.AltLeft] = XInputKeyToEventKeyName.Alt;
-EventKeyToXInputKey[KeyName.AltRight] = XInputKeyToEventKeyName.Alt;
 
 export const getXInputKeyForEventKey = (eventKeyName: KeyName): string => {
     const xInputKey: string = EventKeyToXInputKey[eventKeyName];
