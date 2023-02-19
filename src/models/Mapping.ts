@@ -1,3 +1,5 @@
+import { toastStore, Type } from '../components/Toast';
+
 export interface Mapping {
     [key: string]: string;
     [XInputControllerInput.LeftTrigger]: KeyName;
@@ -558,7 +560,7 @@ export const XInputKeyToEventKeyName: {[key: string]: string} = {
     [XInputKeyInput.Oemplus]: KeyName.Unknown,
     [XInputKeyInput.OemQuestion]: KeyName.Unknown,
     [XInputKeyInput.OemQuotes]: KeyName.Quote,
-    [XInputKeyInput.OemSemicolon]: KeyName.Unknown,
+    [XInputKeyInput.OemSemicolon]: KeyName.Semicolon,
     [XInputKeyInput.Oemtilde]: KeyName.Unknown,
     [XInputKeyInput.P]: KeyName.KeyP,
     [XInputKeyInput.Pa1]: KeyName.Unknown,
@@ -616,6 +618,17 @@ export const EventKeyToXInputKey = Object.keys(XInputKeyToEventKeyName).reduce((
 EventKeyToXInputKey[KeyName.Alt] = XInputKeyToEventKeyName.Alt;
 EventKeyToXInputKey[KeyName.AltLeft] = XInputKeyToEventKeyName.Alt;
 EventKeyToXInputKey[KeyName.AltRight] = XInputKeyToEventKeyName.Alt;
+
+export const getXInputKeyForEventKey = (eventKeyName: KeyName): string => {
+    const xInputKey: string = EventKeyToXInputKey[eventKeyName];
+    if (!xInputKey) {
+        const message = `Unable to find the XInputKeyInput for ${eventKeyName}`;
+
+        toastStore.add(message, Type.Error);
+    }
+
+    return xInputKey;
+}
 
 export const resolveKeyName = (keyboardEventCode: string): KeyName => {
     if (KeyNameMap[keyboardEventCode]) {

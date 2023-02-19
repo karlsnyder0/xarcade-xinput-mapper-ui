@@ -4,7 +4,7 @@ import { makeStyles, Button, Input, Label } from '@fluentui/react-components';
 import { RecordRegular, RecordStopRegular, DismissFilled } from '@fluentui/react-icons';
 
 import KeyUtil from '../util/KeyUtil';
-import { Mapping, resolveKeyName, XInputControllerInput } from '../models/Mapping';
+import { getXInputKeyForEventKey, Mapping, resolveKeyName, XInputControllerInput } from '../models/Mapping';
 import { useMappingStore } from '../stores/MappingStore';
 
 import './XInputMap.scss';
@@ -44,6 +44,11 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
 
     const onChange = (ev: KeyboardEvent) => {
         const keyName = resolveKeyName(ev.code);
+
+        const xInputKeyInput: string = getXInputKeyForEventKey(keyName);
+        if (!xInputKeyInput) {
+            return;
+        }
 
         const mapping: Mapping = read(props.mappingIndex);
         mapping[props.mappingKey] = keyName;
@@ -87,27 +92,29 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
     }
 
     return (
-        <div className={`${className} ${labelAlign === LabelPosition.Left ? 'text-right' : ''}`}>
-            { labelAlign === LabelPosition.Left ? 
-                <Label htmlFor={id} className="pr-2">
-                    {props.label}
-                </Label> : null 
-            }
-            <Input className={styles.input} id={id} size="medium" value={value} ref={inputRef} readOnly={true}
-                placeholder={recording ? 'Press a Key' : ''} input={{ size: 10, style: {cursor: 'default'}}}
-                contentAfter={
-                    <>
-                        <Button appearance="transparent" size="small" icon={recording ? <RecordStopRegular style={{fontSize: '.85em'}} /> : <RecordRegular style={{fontSize: '.85em'}} />} onClick={_onClickRecord} style={Object.assign({ maxWidth: '22px', minWidth: '22px' }, recording ? { color: 'red' } : {})} />
-                        <Button appearance="transparent" size="small" icon={<DismissFilled style={{fontSize: '.85em'}} />} disabled={value && !recording ? false : true} onClick={onClickClear} style={Object.assign({ maxWidth: '22px', minWidth: '22px' }, value && !recording ? {} : { cursor: 'default' })} />
-                    </>
-                } style={{cursor: 'default'}}
-            />
-            { labelAlign === LabelPosition.Right ? 
-                <Label htmlFor={id} className="pl-2">
-                    {props.label}
-                </Label> : null
-            }
-        </div>
+        <>
+            <div className={`${className} ${labelAlign === LabelPosition.Left ? 'text-right' : ''}`}>
+                { labelAlign === LabelPosition.Left ? 
+                    <Label htmlFor={id} className="pr-2">
+                        {props.label}
+                    </Label> : null 
+                }
+                <Input className={styles.input} id={id} size="medium" value={value} ref={inputRef} readOnly={true}
+                    placeholder={recording ? 'Press a Key' : ''} input={{ size: 10, style: {cursor: 'default'}}}
+                    contentAfter={
+                        <>
+                            <Button appearance="transparent" size="small" icon={recording ? <RecordStopRegular style={{fontSize: '.85em'}} /> : <RecordRegular style={{fontSize: '.85em'}} />} onClick={_onClickRecord} style={Object.assign({ maxWidth: '22px', minWidth: '22px' }, recording ? { color: 'red' } : {})} />
+                            <Button appearance="transparent" size="small" icon={<DismissFilled style={{fontSize: '.85em'}} />} disabled={value && !recording ? false : true} onClick={onClickClear} style={Object.assign({ maxWidth: '22px', minWidth: '22px' }, value && !recording ? {} : { cursor: 'default' })} />
+                        </>
+                    } style={{cursor: 'default'}}
+                />
+                { labelAlign === LabelPosition.Right ? 
+                    <Label htmlFor={id} className="pl-2">
+                        {props.label}
+                    </Label> : null
+                }
+            </div>
+        </>
     );
 };
 

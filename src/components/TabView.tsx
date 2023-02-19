@@ -5,16 +5,17 @@ import isElectron from 'is-electron';
 import { Button, Overflow, OverflowItem, SelectTabData, SelectTabEvent, SelectTabEventHandler, Tab, TabList, Tooltip } from '@fluentui/react-components';
 import { CopyRegular, DismissFilled, AddFilled } from '@fluentui/react-icons';
 
-import { useMappingStore } from '../stores/MappingStore';
+import { setMappingStoreState, useMappingStore } from '../stores/MappingStore';
 
 import XInputMapView from './XInputMapView';
 import MessageDialog from './MessageDialog';
 
-import { saveMappingConfig, setMappingStoreState } from '../util/MappingUtil';
+import { saveMappingConfig } from '../util/MappingUtil';
 import { copyToClipboard } from '../util/ClipboardUtil';
 
 import UploadConfig from './UploadConfig';
 import TestInput from './TestInput';
+import Toast from './Toast';
 
 const TabView: React.FC = () => {
     const mappingStoreState = useMappingStore();
@@ -59,6 +60,7 @@ const TabView: React.FC = () => {
     
     return (
         <>
+            <Toast />
             <div className="flex flex-col h-full">
                 <div className="grow-0">
                     <Overflow minimumVisible={2}>

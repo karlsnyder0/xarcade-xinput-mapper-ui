@@ -1,27 +1,11 @@
-import { EventKeyToXInputKey, KeyName, Mapping, XInputControllerInput, XInputKeyToEventKeyName } from '../models/Mapping';
-import { MappingStoreState } from '../stores/MappingStore';
+import { toastStore, Type } from '../components/Toast';
+import { getXInputKeyForEventKey, KeyName, Mapping, XInputControllerInput, XInputKeyToEventKeyName } from '../models/Mapping';
+import { mappingStore } from '../stores/MappingStore';
 
-let mappings: Array<Mapping>;
-let count: () => number;
-let create: () => void;
-let read: (index: number) => Mapping;
-let update: (update: Mapping, index: number) => void;
-let _delete: (index: number) => void;
-
-export const setMappingStoreState = (mappingStoreState: MappingStoreState): void => {
-    const { mappings: _mappings, count: _count, create: _create, read: _read, update: _update, delete: __delete } = mappingStoreState;
-
-    mappings = _mappings;
-    count = _count;
-    create = _create;
-    read = _read;
-    update = _update;
-    _delete = __delete;
-}
 
 const importMapping = (xarcadeXinputMapping: XarcadeXinputMapping): void => {
-    while (count() > 0) {
-        _delete(0);
+    while (mappingStore.count() > 0) {
+        mappingStore.delete(0);
     }
 
     Object.keys(xarcadeXinputMapping).forEach((xInputKeyInput: string) => {
@@ -33,13 +17,21 @@ const importMapping = (xarcadeXinputMapping: XarcadeXinputMapping): void => {
         } else if (xInputMapping.length === 3) {
             xInputMapping.push(null);
         }
+    
+        if (xInputKeyInput === 'undefined') {
+            const message = `An invalid X-Arcade XInput mapping was detected. ${xInputKeyInput}: ${JSON.stringify(xInputMapping)} `;
+
+            toastStore.add(message, Type.Error);
+            return;
+        }
 
         /* eslint-disable-next-line prefer-const */
         let [index, controllerInput, keyDown, keyUp] = xInputMapping;
         keyDown = (typeof keyDown === 'undefined') ? 1 : keyDown;
 
-        if (count() < index + 1) {
-            create();
+        // Create all tabs up to this index.
+        while (mappingStore.count() < index + 1) {
+            mappingStore.create();
         }
 
         if ([XInputControllerInput.LeftStickX,
@@ -54,12 +46,12 @@ const importMapping = (xarcadeXinputMapping: XarcadeXinputMapping): void => {
             // No Op
         }
 
-        const mapping: Mapping = read(index);
+        const mapping: Mapping = mappingStore.read(index);
         const keyName = <KeyName> xInputKeyInput;
         const keyCode: string = XInputKeyToEventKeyName[keyName];
         mapping[controllerInput] = keyCode;
 
-        update(mapping, index);
+        mappingStore.update(mapping, index);
     });
 }
 
@@ -79,13 +71,12 @@ type XarcadeXinputMapping = {[key: string]: [index: number, controllerInput: str
 const exportMapping = (): XarcadeXinputMapping => {
     const xarcadeXinputMapping: XarcadeXinputMapping = {};
 
-    mappings.forEach((mapping, index) => {
+    mappingStore.mappings.forEach((mapping, index) => {
         Object.keys(mapping).forEach((controllerInput: string) => {
             const eventKeyName: KeyName = (mapping[controllerInput] as KeyName);
-            const xInputKeyInput: string = EventKeyToXInputKey[eventKeyName];
-
+            const xInputKeyInput: string = getXInputKeyForEventKey(eventKeyName);
             if (!xInputKeyInput) {
-                console.log(`Unable to find the XInputKeyInput for ${eventKeyName}`);
+                return;
             }
 
             xarcadeXinputMapping[xInputKeyInput] = [index, controllerInput];
