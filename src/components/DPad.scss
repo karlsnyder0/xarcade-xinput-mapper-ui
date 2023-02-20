@@ -1,0 +1,56 @@
+#dpad {
+    position: relative;
+}
+
+#dpad img {
+    position: relative;
+    top: 0;
+}
+
+#dpad svg {
+    position: absolute;
+    top: 0;
+}
+
+img.dpad, svg.dpad {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    object-position: top;
+}
+
+img.dpad {
+    content: url('../images/dpad.png');
+}
+
+$pulse-color: #4fb2ff;
+
+.animated-pulse path {
+    fill: transparentize($pulse-color, .3);
+    animation: 1.5s pulseInfinite infinite;
+    -webkit-transform-origin: center center;
+    opacity: 1;
+}
+
+@keyframes pulseInfinite {
+    0% {
+        stroke-width: 1;
+        stroke: transparentize($pulse-color, .1);
+    }
+    100% {
+        stroke-width: 15;
+        stroke: transparentize($pulse-color, .99);
+    }
+}
+
+svg.dpad path {
+    display: none;
+}
+
+$inputs: ('lefttrigger', 'leftbumper', 'leftstickx', 'leftstickxi', 'leftsticky', 'leftstickyi', 'righttrigger', 'rightbumper', 'rightstickx', 'rightstickxi', 'rightsticky', 'rightstickyi', 'up', 'down', 'left', 'right', 'y', 'b', 'a', 'x', 'start', 'back', 'logo');
+
+@each $name in $inputs {
+    div#dpad.#{$name} svg.dpad path#dpad-#{$name} {
+        display: inline;
+    }
+}

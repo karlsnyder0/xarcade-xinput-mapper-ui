@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, Ref, useState } from 'react';
+import React, { MouseEventHandler, Ref, useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 import { makeStyles, Button, Input, Label } from '@fluentui/react-components';
 import { RecordRegular, RecordStopRegular, DismissFilled } from '@fluentui/react-icons';
@@ -18,9 +18,10 @@ interface XInputMapProps {
     className?: string;
     label: string;
     labelAlign?: LabelPosition.Left | LabelPosition.Right;
-    mappingKey: XInputControllerInput;
-    mappingIndex: number;
-    mappingValue: string;
+    xInputName: XInputControllerInput;
+    index: number;
+    value: string;
+    onActive: (key: XInputControllerInput, active: boolean) => void;
 }
 
 const useStyles = makeStyles({
@@ -37,8 +38,11 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
     const styles = useStyles();
 
     const {read, update} = useMappingStore();
-    const [value] = useState<string>(props.mappingValue || '');
+    const [value] = useState<string>(props.value || '');
     const [recording, setRecording] = useState<boolean>(false);
+
+    const key = props.xInputName;
+    const onActive = props.onActive;
 
     const inputRef: Ref<HTMLInputElement> = React.createRef();
 
@@ -50,20 +54,20 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
             return;
         }
 
-        const mapping: Mapping = read(props.mappingIndex);
-        mapping[props.mappingKey] = keyName;
+        const mapping: Mapping = read(props.index);
+        mapping[props.xInputName] = keyName;
 
-        update(mapping, props.mappingIndex);
+        update(mapping, props.index);
     };
 
     const onClickClear: MouseEventHandler = () => {
-        const mapping: Mapping = read(props.mappingIndex);
-        delete mapping[props.mappingKey];
+        const mapping: Mapping = read(props.index);
+        delete mapping[props.xInputName];
 
-        update(mapping, props.mappingIndex);
+        update(mapping, props.index);
     }
 
-    const _onClickRecord: MouseEventHandler = () => {
+    const onClickRecord: MouseEventHandler = () => {
         if (recording) {
             setRecording(false);
 
@@ -80,9 +84,6 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
     }
 
     const onWaitForNext = (ev: KeyboardEvent) => {
-        // console.log('_handleKeyDown_waitForNext', ev);
-        // console.log('_handleKeyDown_waitForNext', ev.code);
-
         setRecording(false);
         onChange(ev);
     }
@@ -90,6 +91,10 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
     const onWaitForNextCancel = () => {
         setRecording(false);
     }
+
+    useEffect(() => {
+        onActive(key, recording);
+    }, [recording])
 
     return (
         <>
@@ -103,7 +108,7 @@ const XInputMap: React.FC<XInputMapProps> = (props: XInputMapProps) => {
                     placeholder={recording ? 'Press a Key' : ''} input={{ size: 10, style: {cursor: 'default'}}}
                     contentAfter={
                         <>
-                            <Button appearance="transparent" size="small" icon={recording ? <RecordStopRegular style={{fontSize: '.85em'}} /> : <RecordRegular style={{fontSize: '.85em'}} />} onClick={_onClickRecord} style={Object.assign({ maxWidth: '22px', minWidth: '22px' }, recording ? { color: 'red' } : {})} />
+                            <Button appearance="transparent" size="small" icon={recording ? <RecordStopRegular style={{fontSize: '.85em'}} /> : <RecordRegular style={{fontSize: '.85em'}} />} onClick={onClickRecord} style={Object.assign({ maxWidth: '22px', minWidth: '22px' }, recording ? { color: 'red' } : {})} />
                             <Button appearance="transparent" size="small" icon={<DismissFilled style={{fontSize: '.85em'}} />} disabled={value && !recording ? false : true} onClick={onClickClear} style={Object.assign({ maxWidth: '22px', minWidth: '22px' }, value && !recording ? {} : { cursor: 'default' })} />
                         </>
                     } style={{cursor: 'default'}}
